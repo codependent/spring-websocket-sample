@@ -32,7 +32,7 @@
             <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
         </websocket:handshake-interceptors>
     </websocket:handlers>
-    <!-- 
+
     <websocket:handlers>
         <websocket:mapping path="/simpleChatHandlerSockJS" handler="simpleChatHandler"/>
         <websocket:handshake-interceptors>
@@ -40,7 +40,7 @@
         </websocket:handshake-interceptors>
         <websocket:sockjs/>
     </websocket:handlers>
-	 -->
+	 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 	        <property name="prefix" value="/WEB-INF/view/"/>
 	        <property name="suffix" value=".jsp"/>

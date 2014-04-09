@@ -15,11 +15,11 @@ public class SimpleWebsocketChat {
 	@Autowired
 	private Rooms rooms;
 	
-	@RequestMapping("/simpleWebsocketChat/login")
-	public String simpleWebsocketChatLogin(String userName, HttpSession session, RedirectAttributes flash){
+	@RequestMapping("/login")
+	public String simpleWebsocketChatLogin(String userName, String mode, HttpSession session, RedirectAttributes flash){
 		session.setAttribute("userName", userName);
 		flash.addAttribute("room","public");
-		return "redirect:/simpleWebsocketChat";
+		return "redirect:/"+mode;
 	}
 	
 	@RequestMapping("/simpleWebsocketChat")
@@ -30,6 +30,16 @@ public class SimpleWebsocketChat {
 		}
 		rooms.enter(room, userName);
 		return "simpleWebsocketChat";
+	}
+	
+	@RequestMapping("/simpleSockJSWebsocketChat")
+	public String simpleSockJSWebsocketChat(HttpSession session, String room){
+		String userName = (String)session.getAttribute("userName");
+		if(userName == null || userName.trim().equals("")){
+			return "redirect:/index";
+		}
+		rooms.enter(room, userName);
+		return "simpleSockJSWebsocketChat";
 	}
 	
 }

@@ -13,7 +13,13 @@
 	</head> 
 	<body>
 		<c:url value="/home" var="messageUrl" />
-		<form action="<c:url value="/simpleWebsocketChat/login"/>" method="POST">
+		<form action="<c:url value="/login"/>" method="POST">
+			<div>
+				<select name="mode">
+					<option value="simpleWebsocketChat/">Simple WS</option>
+					<option value="simpleSockJSWebsocketChat/">Simple SockJS WS</option>
+				</select>
+			</div>
 			<div>
 				<input type="text" name="userName"/>
 			</div>
