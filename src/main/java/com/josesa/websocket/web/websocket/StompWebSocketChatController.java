@@ -21,8 +21,9 @@ public class StompWebSocketChatController {
 	private ChatService chatService;
 	
 	@MessageMapping("/chat")
-	public void chat(Message message/*, Principal principal*/) {
+	public void chat(Message message, Principal principal) {
 		logger.info("received msg {}",message.toString());
+		message.setUser(principal.getName());
 		chatService.send(message);
 	}	
 	

@@ -1,5 +1,7 @@
 package com.josesa.websocket.web.controller;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,9 @@ public class WebSocketChatController {
 	@Autowired
 	private Rooms rooms;
 	
-	@RequestMapping("/login")
-	public String simpleWebsocketChatLogin(String userName, String mode, HttpSession session, RedirectAttributes flash){
-		session.setAttribute("userName", userName);
+	@RequestMapping("/enter")
+	public String simpleWebsocketChatLogin(Principal principal, String mode, HttpSession session, RedirectAttributes flash){
+		session.setAttribute("userName", principal.getName());
 		flash.addAttribute("room","public");
 		return "redirect:/"+mode;
 	}

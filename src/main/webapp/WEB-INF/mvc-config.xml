@@ -21,6 +21,7 @@
 
     <mvc:annotation-driven />
     <mvc:view-controller path="/index" view-name="index" />
+    <mvc:view-controller path="/login" view-name="login" />
     
     <!--
     	No se puede usar ya que le asigna el nombre org.springframework.web.servlet.handler.SimpleUrlHandlerMapping#0

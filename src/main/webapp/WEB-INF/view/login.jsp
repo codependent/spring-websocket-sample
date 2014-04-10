@@ -12,14 +12,12 @@
 		<title>Welcome</title>
 	</head> 
 	<body>
-		<c:url value="/home" var="messageUrl" />
-		<form action="<c:url value="/enter"/>" method="POST">
+		<form action="<c:url value="/j_security_check"/>" method="POST">
 			<div>
-				<select name="mode">
-					<option value="simpleWebsocketChat/">Simple WS</option>
-					<option value="simpleSockJSWebsocketChat/">Simple SockJS WS</option>
-					<option value="stompSockJSWebsocketChat/">STOMP SockJS WS</option>
-				</select>
+				<input type="text" name="j_username"/>
+			</div>
+			<div>
+				<input type="password" name="j_password"/>
 			</div>
 			<div>
 				<input type="submit" name="entrar" value="Entrar"/>
