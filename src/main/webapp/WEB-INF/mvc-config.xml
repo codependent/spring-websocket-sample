@@ -17,7 +17,7 @@
         				http://www.springframework.org/schema/util 
         				http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <context:component-scan base-package="com.josesa.websocket.web"/>
+    <context:component-scan base-package="com.josesa.websocket.web.controller"/>
 
     <mvc:annotation-driven />
     <mvc:view-controller path="/index" view-name="index" />

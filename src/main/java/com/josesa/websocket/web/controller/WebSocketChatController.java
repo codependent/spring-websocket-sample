@@ -10,7 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.josesa.websocket.chat.Rooms;
 
 @Controller
-public class SimpleWebsocketChat {
+public class WebSocketChatController {
 
 	@Autowired
 	private Rooms rooms;

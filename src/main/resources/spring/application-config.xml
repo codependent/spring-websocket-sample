@@ -13,6 +13,7 @@
 				        http://www.springframework.org/schema/websocket
         				http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd">
     
+    <context:component-scan base-package="com.josesa.websocket.web.websocket"/>
     <context:component-scan base-package="com.josesa.websocket.service"/>
     <context:component-scan base-package="com.josesa.websocket.chat"/>
 	<util:map id="simpleChatSessionMap" key-type="java.lang.String"/>
