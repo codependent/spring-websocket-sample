@@ -18,6 +18,7 @@
 				<select name="mode">
 					<option value="simpleWebsocketChat/">Simple WS</option>
 					<option value="simpleSockJSWebsocketChat/">Simple SockJS WS</option>
+					<option value="stompSockJSWebsocketChat/">STOMP SockJS WS</option>
 				</select>
 			</div>
 			<div>

@@ -18,28 +18,32 @@
         				http://www.springframework.org/schema/util/spring-util.xsd">
 
     <context:component-scan base-package="com.josesa.websocket.web"/>
-    <context:component-scan base-package="com.josesa.websocket.chat"/>
 
     <mvc:annotation-driven />
-    <mvc:view-controller path="/index" view-name="index"/>
-    <mvc:resources mapping="/resources/**" location="public/"/>
+    <mvc:view-controller path="/index" view-name="index" />
     
-    <bean id="simpleChatHandler" class="com.josesa.websocket.web.websocket.SimpleChatHandler"/>
-    
-    <websocket:handlers>
-        <websocket:mapping path="/simpleChatHandler" handler="simpleChatHandler"/>
-        <websocket:handshake-interceptors>
-            <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
-        </websocket:handshake-interceptors>
-    </websocket:handlers>
-
-    <websocket:handlers>
-        <websocket:mapping path="/simpleChatHandlerSockJS" handler="simpleChatHandler"/>
-        <websocket:handshake-interceptors>
-            <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
-        </websocket:handshake-interceptors>
-        <websocket:sockjs/>
-    </websocket:handlers>
+    <!--
+    	No se puede usar ya que le asigna el nombre org.springframework.web.servlet.handler.SimpleUrlHandlerMapping#0
+    	y pisa al de otro Simple... del root app cfg
+    	<mvc:resources mapping="/resources/**" location="public/" order="7"/>
+     -->
+	<bean name="resourcesMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="urlMap">
+			<map>
+				<entry key="/resources/**">
+					<bean class="org.springframework.web.servlet.resource.ResourceHttpRequestHandler">
+						<property name="locations">
+							<list>
+								<bean class="java.lang.String">
+									<constructor-arg value="public/"/>
+								</bean>
+							</list>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
 	 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 	        <property name="prefix" value="/WEB-INF/view/"/>

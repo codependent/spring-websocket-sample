@@ -3,13 +3,45 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:util="http://www.springframework.org/schema/util"  
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/context 
 						http://www.springframework.org/schema/context/spring-context.xsd
 						http://www.springframework.org/schema/util 
-				        http://www.springframework.org/schema/util/spring-util.xsd">
+				        http://www.springframework.org/schema/util/spring-util.xsd
+				        http://www.springframework.org/schema/websocket
+        				http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd">
     
+    <context:component-scan base-package="com.josesa.websocket.service"/>
+    <context:component-scan base-package="com.josesa.websocket.chat"/>
 	<util:map id="simpleChatSessionMap" key-type="java.lang.String"/>
 
+	<bean id="simpleChatHandler" class="com.josesa.websocket.web.websocket.SimpleChatHandler"/>
+    
+    <!-- Only WebSocket -->
+    <websocket:handlers order="20">
+        <websocket:mapping path="/simpleChatHandler" handler="simpleChatHandler"/>
+        <websocket:handshake-interceptors>
+            <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+        </websocket:handshake-interceptors>
+    </websocket:handlers>
+
+	<!-- SockJS -->
+    <websocket:handlers order="30">
+        <websocket:mapping path="/simpleChatHandlerSockJS" handler="simpleChatHandler"/>
+        <websocket:handshake-interceptors>
+            <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+        </websocket:handshake-interceptors>
+        <websocket:sockjs/>
+    </websocket:handlers>
+    
+    <!-- STOMP + SockJS -->
+	<websocket:message-broker application-destination-prefix="/app" order="40">
+	    <websocket:stomp-endpoint path="/stompChatHandlerSockJS">
+	        <websocket:sockjs/>
+	    </websocket:stomp-endpoint>
+    	<websocket:simple-broker prefix="/queue, /topic"/>
+  	</websocket:message-broker>
+	
 </beans>
