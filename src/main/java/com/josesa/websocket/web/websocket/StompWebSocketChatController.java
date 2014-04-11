@@ -32,8 +32,4 @@ public class StompWebSocketChatController {
 		logger.info("aki1");
 	}
 	
-	@SubscribeMapping("/public")
-	public void susc2(Principal principal) throws Exception {
-		logger.info("aki2");
-	}
 }

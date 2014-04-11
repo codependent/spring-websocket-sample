@@ -3,6 +3,7 @@ package com.josesa.websocket.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.core.MessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.josesa.websocket.chat.Message;
@@ -23,7 +24,16 @@ public class ChatServiceImpl implements ChatService{
 
 	@Override
 	public void send(Message msg) {
-		messagingTemplate.convertAndSend("/topic/public", msg);
+		messagingTemplate.convertAndSend(msg.getDestination(), msg);
 	}
 
+	@Scheduled(fixedDelay=10000)
+	public void sendAdvertisement() {
+		Message msg = new Message();
+		msg.setDestination("/topic/public");
+		msg.setUser("Publicidad");
+		msg.setMessage("Apúntate al gym");
+		template.convertAndSend(msg.getDestination(), msg);
+	}
+	
 }

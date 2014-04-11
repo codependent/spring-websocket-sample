@@ -28,7 +28,8 @@ public class SimpleChatHandler extends TextWebSocketHandler{
 			logger.info("adding new session {}",session.getId());
 			simpleChatSessionMap.put(session.getId(), session);
 		}
-		String userName = (String)session.getAttributes().get("userName");
+		String userName = session.getPrincipal().getName();
+		//String userName = (String)session.getAttributes().get("userName");
 		TextMessage tm = new TextMessage((userName + ": "+message.getPayload()));
 
 		for (Iterator<Entry<String, WebSocketSession>> iterator = simpleChatSessionMap.entrySet().iterator(); iterator.hasNext();) {

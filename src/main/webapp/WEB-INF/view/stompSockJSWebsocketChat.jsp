@@ -38,6 +38,8 @@
 				     stompClient.subscribe("/user/queue/errors", function(message) {
 				    	 
 				     }*/
+			    },function(err){
+			    	alert("ERROR!!!! "+err);
 			    });
 				
 				$("#sendChat").on("click", function(e) {
@@ -54,7 +56,7 @@
 					var text = $("[name=chatText]").val();
 					if(text.length>0){
 						console.log("Sending text "+text);	
-						stompClient.send("/app/chat", {}, '{"message":"'+text+'"}');
+						stompClient.send("/app/chat", {}, '{"destination":"/topic/public","message":"'+text+'"}');
 						$("[name=chatText]").val("");
 						$("[name=chatText]").focus();
 					}
