@@ -4,3 +4,4 @@ bin
 .project
 .settings
 src/main/webapp/WEB-INF/classes/
+nodejs/node_modules

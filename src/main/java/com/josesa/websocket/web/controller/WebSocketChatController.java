@@ -54,4 +54,14 @@ public class WebSocketChatController {
 		return "stompSockJSWebsocketChat";
 	}
 	
+	@RequestMapping("/nodeJsSocketIoChat")
+	public String nodeJsSocketIoChat(HttpSession session, String room){
+		String userName = (String)session.getAttribute("userName");
+		if(userName == null || userName.trim().equals("")){
+			return "redirect:/index";
+		}
+		rooms.enter(room, userName);
+		return "nodeJsSocketIoChat";
+	}
+	
 }

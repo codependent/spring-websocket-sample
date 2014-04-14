@@ -16,9 +16,10 @@
 		<form action="<c:url value="/enter"/>" method="POST">
 			<div>
 				<select name="mode">
-					<option value="simpleWebsocketChat/">Simple WS</option>
-					<option value="simpleSockJSWebsocketChat/">Simple SockJS WS</option>
-					<option value="stompSockJSWebsocketChat/">STOMP SockJS WS</option>
+					<option value="simpleWebsocketChat">Simple WS</option>
+					<option value="simpleSockJSWebsocketChat">Simple SockJS WS</option>
+					<option value="stompSockJSWebsocketChat">STOMP SockJS WS</option>
+					<option value="nodeJsSocketIoChat">NodeJS socket.io WS</option>
 				</select>
 			</div>
 			<div>
