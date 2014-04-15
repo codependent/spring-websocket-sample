@@ -21,8 +21,7 @@ app.use(function(req, res, next) {
     // intercept OPTIONS method
     if ('OPTIONS' == req.method) {
       res.send(200);
-    }
-    else {
+    }else{
       next();
     }
 });
@@ -33,10 +32,11 @@ app.use(express.urlencoded()); // to support URL-encoded bodies
 app.use(express.session({ store: sessionStore, secret: COOKIE_SECRET, key: EXPRESS_SID_KEY}));
 
 app.post('/login', function(req, res){
+	console.log("---LOGIN---")
+	console.log("---LOGIN--- nodeAuthToken: "+req.cookies.nodeAuthToken);
 	//TODO Acceso al usuario logado. A través del token recibido en esta petición se consulda en BBDD
 	//se obtiene la info del usuario logado y se inserta en la sesión de express
 	//sessionStore.user=req.body.token
-	console.log("LOGIN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 	req.session.user=req.body.token;
 	res.send(200, 'logged');
 });

@@ -20,9 +20,6 @@
 		<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
 			$(function() {
-				//XXX Workaround para permitir set de cookie connect.sid. La primera vez no funciona!!!
-				//$("body").append("<iframe style='display:none' src='http://"+window.location.hostname+":3000/login?token=${pageContext.request.userPrincipal.name}'></iframe>");
-				
 				$.ajax({
 					url:"http://localhost:3000/login",
 					type:"POST",

@@ -1,7 +1,12 @@
 package com.josesa.websocket.web.controller;
 
+import java.math.BigInteger;
 import java.security.Principal;
+import java.security.SecureRandom;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +21,8 @@ public class WebSocketChatController {
 
 	@Autowired
 	private Rooms rooms;
+	
+	private SecureRandom random = new SecureRandom();
 	
 	@RequestMapping("/enter")
 	public String simpleWebsocketChatLogin(Principal principal, String mode, HttpSession session, RedirectAttributes flash){
@@ -55,12 +62,36 @@ public class WebSocketChatController {
 	}
 	
 	@RequestMapping("/nodeJsSocketIoChat")
-	public String nodeJsSocketIoChat(Principal principal, String room){
+	public String nodeJsSocketIoChat(Principal principal, HttpServletRequest request, HttpServletResponse response, String room){
 		if(principal == null){
 			return "redirect:/index";
+		}
+		if(!hasNodeAuthCookie(request)){
+			response.addCookie(generateNodeAuthCookie());
 		}
 		rooms.enter(room, principal.getName());
 		return "nodeJsSocketIoChat";
 	}
 	
+	private boolean hasNodeAuthCookie(HttpServletRequest request){
+		Cookie[] cookies = request.getCookies();
+		boolean hasCookie = false;
+		for (int i = 0; i < cookies.length&&!hasCookie; i++) {
+			Cookie cookie = cookies[i];
+			if(cookie.getName().equals("nodeAuthToken")){
+				hasCookie=true;
+			}
+		}
+		return hasCookie;
+	}
+	
+	private Cookie generateNodeAuthCookie(){
+		String randomToken = new BigInteger(130, random).toString(32);
+		Cookie c = new Cookie("nodeAuthToken", randomToken);
+		c.setSecure(false);
+		c.setMaxAge(-1);
+		c.setPath("/");
+		
+		return c;
+	}
 }
