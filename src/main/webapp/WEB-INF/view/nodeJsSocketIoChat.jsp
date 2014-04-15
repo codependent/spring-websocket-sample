@@ -20,40 +20,54 @@
 		<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
 			$(function() {
-				var socket = io.connect("http://localhost:3000/topic/public",{query: "user=${pageContext.request.userPrincipal.name}"});
-				console.log(socket);
-				socket.on("processed chat", function(msg) {
-					console.log("got message "+msg);
-					$("#chatHistory").append('<div>'+msg+'</div>');
-					document.getElementById("chatHistory").scrollTop = document.getElementById("chatHistory").scrollHeight;
-				});
-				socket.on('connect_failed', function (data) {
-		            console.log(data || 'connect_failed');
-		        });
-				socket.on('error', function (data) {
-			    	console.log(data || 'error');
-			    });
+				//XXX Workaround para permitir set de cookie connect.sid. La primera vez no funciona!!!
+				//$("body").append("<iframe style='display:none' src='http://"+window.location.hostname+":3000/login?token=${pageContext.request.userPrincipal.name}'></iframe>");
 				
-				$("#sendChat").on("click", function(e) {
-					sendText();
-				});
-				
-				$("#chatText").on("keyup", function(e) {
-					if(e.which==13){
+				$.ajax({
+					url:"http://localhost:3000/login",
+					type:"POST",
+					data:{token:"${pageContext.request.userPrincipal.name}"},
+					xhrFields: {
+					  withCredentials: true
+					}
+				}).success(function(data){
+					console.log(data);
+					var socket = io.connect("http://"+window.location.hostname+":3000/topic/public",{query: "user=${pageContext.request.userPrincipal.name}"});
+					console.log(socket);
+					socket.on("processed chat", function(msg) {
+						console.log("got message "+msg);
+						$("#chatHistory").append('<div>'+msg+'</div>');
+						document.getElementById("chatHistory").scrollTop = document.getElementById("chatHistory").scrollHeight;
+					});
+					socket.on('connect_failed', function (data) {
+				           console.log(data || 'connect_failed');
+				       });
+					socket.on('error', function (data) {
+					   	console.log(data || 'error');
+					  });
+						
+					$("#sendChat").on("click", function(e) {
 						sendText();
+					});
+						
+					$("#chatText").on("keyup", function(e) {
+						if(e.which==13){
+							sendText();
+						}
+					});
+					
+					function sendText(){
+						var text = $("[name=chatText]").val();
+						if(text.length>0){
+							console.log("Sending text "+text);	
+							socket.emit("chat", text);
+							$("[name=chatText]").val("");
+							$("[name=chatText]").focus();
+						}
 					}
+				}).fail(function(err){
+					console.log(err)
 				});
-				
-				function sendText(){
-					var text = $("[name=chatText]").val();
-					if(text.length>0){
-						console.log("Sending text "+text);	
-						socket.emit("chat", text);
-						$("[name=chatText]").val("");
-						$("[name=chatText]").focus();
-					}
-				}
-				
 			});
 		</script>
 	</head> 

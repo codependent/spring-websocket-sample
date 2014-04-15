@@ -55,12 +55,11 @@ public class WebSocketChatController {
 	}
 	
 	@RequestMapping("/nodeJsSocketIoChat")
-	public String nodeJsSocketIoChat(HttpSession session, String room){
-		String userName = (String)session.getAttribute("userName");
-		if(userName == null || userName.trim().equals("")){
+	public String nodeJsSocketIoChat(Principal principal, String room){
+		if(principal == null){
 			return "redirect:/index";
 		}
-		rooms.enter(room, userName);
+		rooms.enter(room, principal.getName());
 		return "nodeJsSocketIoChat";
 	}
 	
