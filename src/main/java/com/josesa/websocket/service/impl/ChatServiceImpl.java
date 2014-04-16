@@ -3,7 +3,6 @@ package com.josesa.websocket.service.impl;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
-import javax.servlet.http.Cookie;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +59,7 @@ public class ChatServiceImpl implements ChatService{
 		Message msg = new Message();
 		msg.setDestination("/topic/public");
 		msg.setUser("Publicidad");
-		msg.setMessage("Apúntate al gym");
+		msg.setMessage("ApÃºntate al gym");
 		template.convertAndSend(msg.getDestination(), msg);
 	}
 
