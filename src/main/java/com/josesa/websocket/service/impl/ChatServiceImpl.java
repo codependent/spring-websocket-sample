@@ -42,10 +42,7 @@ public class ChatServiceImpl implements ChatService{
 	@Transactional
 	@Override
 	public String generateNodeJsToken(String userName) {
-		AuthToken authToken = authTokenDAO.findByUserName(userName);
-		if(authToken!=null){
-			authTokenDAO.delete(authToken);
-		}
+		removeNodeJsToken(userName);
 		String token = generateRandomToken();
 		AuthToken a = new AuthToken();
 		a.setToken(token);
@@ -67,5 +64,13 @@ public class ChatServiceImpl implements ChatService{
 		String randomToken = new BigInteger(130, random).toString(32);
 		return randomToken;
 	}
-	
+
+	@Transactional
+	@Override
+	public void removeNodeJsToken(String userName) {
+		AuthToken authToken = authTokenDAO.findByUserName(userName);
+		if(authToken!=null){
+			authTokenDAO.delete(authToken);
+		}
+	}
 }

@@ -17,6 +17,7 @@
 			}
 		</style>
 		<script type="text/javascript" src="<c:url value="/resources/js/jquery/jquery.js"/>"></script>
+		<script type="text/javascript" src="<c:url value="/resources/js/jquery/jquery.cookie.js"/>"></script>
 		<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
 			$(function() {
@@ -62,16 +63,22 @@
 							$("[name=chatText]").focus();
 						}
 					}
-				}).fail(function(err){
-					console.log(err)
+				}).fail(function( jqXHR, textStatus, errorThrownerr){
+					console.log("ERROR "+textStatus)
+					if(jqXHR.status == 401){
+						$.removeCookie('nodeAuthToken',{path:"/"});
+						alert("La autenticación del servicio ha expirado. Refresque la página o vuelva a autenticarse en la aplicación");
+					}
 				});
 			});
 		</script>
 	</head> 
 	<body>
+		<div><a href="<c:url value="/logout"/>">Logout</a></div>
 		<h2>NodeJS SockJS WS C</h2>
 		<div id="chatHistory">
 		</div>
 		<div><input id="chatText" name="chatText" type="text"/><input id="sendChat" type="button" value="Enviar"/></div>
+		
 	</body>
 </html>
