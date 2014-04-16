@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"  
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/util 
+				        http://www.springframework.org/schema/util/spring-util.xsd
+        				http://www.springframework.org/schema/task
+        				http://www.springframework.org/schema/task/spring-task.xsd
+        				http://www.springframework.org/schema/jdbc
+        				http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+        				http://www.springframework.org/schema/tx
+        				http://www.springframework.org/schema/tx/spring-tx.xsd
+        				http://www.springframework.org/schema/data/jpa
+	       				http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+    
+	<jdbc:embedded-database id="dataSource" type="H2"></jdbc:embedded-database>
+	<bean id="h2Server" class="org.h2.tools.Server" factory-method="createTcpServer" init-method="start" destroy-method="stop" depends-on="h2WebServer">
+	    <constructor-arg value="-tcp,-tcpAllowOthers,-tcpPort,9092"/>
+	</bean>
+	<bean id="h2WebServer" class="org.h2.tools.Server" factory-method="createWebServer" init-method="start" destroy-method="stop">
+	    <constructor-arg value="-web,-webAllowOthers,-webPort,8082"/>
+	</bean>
+	
+	<bean id="mainEntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+	    <property name="persistenceUnitName" value="mainPersistenceUnit"/>
+	    <property name="dataSource" ref="dataSource"/>
+	    <property name="packagesToScan">
+	    	<list>
+	    		<value>com.josesa.websocket.entity</value>
+	    	</list>
+	    </property>
+	    <property name="jpaProperties">
+	        <props>
+	            <prop key="hibernate.transaction.jta.platform">org.hibernate.service.jta.platform.internal.WebSphereExtendedJtaPlatform</prop>
+	            <prop key="hibernate.current_session_context_class">thread</prop>
+	            <prop key="hibernate.show_sql">true</prop>
+	            <prop key="hibernate.format_sql">true</prop>
+	            <prop key="hibernate.hbm2ddl.auto">update</prop>
+	        </props>
+	    </property>
+	    <property name="jpaVendorAdapter">
+	        <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+	    </property>
+	    <property name="jpaDialect">
+	        <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+	    </property>
+	</bean>
+	
+	<!-- Escanea el paquete indicado para buscar Repositorios de Spring Data JPA -->
+	<jpa:repositories base-package="com.josesa.websocket.dao"/>
+	
+	<tx:annotation-driven order="0" />
+	
+	<bean name="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="mainEntityManagerFactory"/>
+	</bean>
+	
+</beans>

@@ -60,7 +60,7 @@ public class ChatServiceImpl implements ChatService{
 		Message msg = new Message();
 		msg.setDestination("/topic/public");
 		msg.setUser("Publicidad");
-		msg.setMessage("ApÃºntate al gym");
+		msg.setMessage("Apúntate al gym");
 		template.convertAndSend(msg.getDestination(), msg);
 	}
 
