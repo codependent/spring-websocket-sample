@@ -46,9 +46,9 @@ var io = require("socket.io").listen(server);
 io.of('/topic/public').authorization(function (handshakeData, callback) {
 	console.log("---SOCKET.IO AUTHORIZATION---");
 	console.log("---SOCKET.IO AUTHORIZATION--- Handshake Cookie "+handshakeData.headers.cookie);
-	console.log("---SOCKET.IO AUTHORIZATION--- Handshake Data ***********************");
+	console.log("---SOCKET.IO AUTHORIZATION--- Handshake Data Init ***********************");
 	console.dir(handshakeData);
-	console.log("---SOCKET.IO AUTHORIZATION--- Handshake Data ***********************");
+	console.log("---SOCKET.IO AUTHORIZATION--- Handshake Data End ***********************");
 	
 	// We use the Express cookieParser created before to parse the cookie
     // Express cookieParser(req, res, next) is used initialy to parse data in "req.headers.cookie".

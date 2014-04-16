@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.josesa.websocket.chat.Rooms;
+import com.josesa.websocket.service.ChatService;
 
 @Controller
 public class WebSocketChatController {
@@ -22,7 +23,8 @@ public class WebSocketChatController {
 	@Autowired
 	private Rooms rooms;
 	
-	private SecureRandom random = new SecureRandom();
+	@Autowired
+	private ChatService chatService;
 	
 	@RequestMapping("/enter")
 	public String simpleWebsocketChatLogin(Principal principal, String mode, HttpSession session, RedirectAttributes flash){
@@ -67,7 +69,8 @@ public class WebSocketChatController {
 			return "redirect:/index";
 		}
 		if(!hasNodeAuthCookie(request)){
-			response.addCookie(generateNodeAuthCookie());
+			String token = chatService.generateNodeJsToken(principal.getName());
+			response.addCookie(generateNodeAuthCookie(token));
 		}
 		rooms.enter(room, principal.getName());
 		return "nodeJsSocketIoChat";
@@ -76,7 +79,7 @@ public class WebSocketChatController {
 	private boolean hasNodeAuthCookie(HttpServletRequest request){
 		Cookie[] cookies = request.getCookies();
 		boolean hasCookie = false;
-		for (int i = 0; i < cookies.length&&!hasCookie; i++) {
+		for (int i = 0; i < cookies.length && !hasCookie; i++) {
 			Cookie cookie = cookies[i];
 			if(cookie.getName().equals("nodeAuthToken")){
 				hasCookie=true;
@@ -85,13 +88,11 @@ public class WebSocketChatController {
 		return hasCookie;
 	}
 	
-	private Cookie generateNodeAuthCookie(){
-		String randomToken = new BigInteger(130, random).toString(32);
-		Cookie c = new Cookie("nodeAuthToken", randomToken);
+	private Cookie generateNodeAuthCookie(String token){
+		Cookie c = new Cookie("nodeAuthToken", token);
 		c.setSecure(false);
 		c.setMaxAge(-1);
 		c.setPath("/");
-		
 		return c;
 	}
 }

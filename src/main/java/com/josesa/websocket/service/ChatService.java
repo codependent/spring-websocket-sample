@@ -4,6 +4,8 @@ import com.josesa.websocket.chat.Message;
 
 public interface ChatService {
 
+	String generateNodeJsToken(String userName);
 	void send(Message message);
+	void sendAdvertisement();
 	
 }
