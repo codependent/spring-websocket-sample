@@ -14,10 +14,10 @@
 	<body>
 		<form action="<c:url value="/j_security_check"/>" method="POST">
 			<div>
-				<input type="text" name="j_username"/>
+				<span>Usuario: </span><input type="text" name="j_username"/>
 			</div>
 			<div>
-				<input type="password" name="j_password"/>
+				<span>Password: </span><input type="password" name="j_password"/>
 			</div>
 			<div>
 				<input type="submit" name="entrar" value="Entrar"/>

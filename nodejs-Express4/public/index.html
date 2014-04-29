@@ -1,0 +1,13 @@
+<html>
+<head>
+	<script src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript">
+	var socket = io.connect("http://localhost:3000");
+	socket.on("ping", function() {
+		console.log("PING!");
+		socket.emit("pong");
+	});
+	</script>
+</head>
+<body></body>
+</html>
